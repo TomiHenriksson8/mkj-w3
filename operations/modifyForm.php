@@ -2,23 +2,21 @@
 global $DBH;
 require_once __DIR__ . '/../db/dbConnect.php';
 
+require_once __DIR__ . '/../MediaProject/MediaItemDatabaseOps.class.php';
+
+$mediaItemDatabaseOps = new MediaProject\MediaItemDatabaseOps($DBH);
+
 if (isset($_GET['id'])) {
-    $sql = 'SELECT * FROM MediaItems WHERE media_id = :media_id';
 
     $data = [
         'media_id' => $_GET['id']
     ];
 
-    try {
-        $STH = $DBH->prepare($sql);
-        $STH->execute($data);
-        $STH->setFetchMode(PDO::FETCH_ASSOC);
-        $row = $STH->fetch();
-    } catch (PDOException $e) {
-        echo "Could not get data from the database." . $e->getMessage();
-        file_put_contents('PDOErrors.txt', 'modifyForm.php - ' . $e->getMessage(), FILE_APPEND);
+    $mediaItem = $mediaItemDatabaseOps->getMediaItem($data);
+    if (!$mediaItem) {
         exit;
     }
+    $row = $mediaItem->getMediaItem();
 
 }
 

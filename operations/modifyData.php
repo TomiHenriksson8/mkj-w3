@@ -11,6 +11,7 @@ require_once __DIR__ . '/../db/dbConnect.php';
 require_once __DIR__ . '/../MediaProject/MediaItemDatabaseOps.class.php';
 
 $mediaItemDatabaseOps = new MediaProject\MediaItemDatabaseOps($DBH);
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['title']) && isset($_POST['description'])) {
         $data = [
